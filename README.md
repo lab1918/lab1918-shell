@@ -36,5 +36,5 @@ Run test
 ```
 pip install -r requirements-dev.txt
 pip install -e .
-pytest
+pytest or tox
 ```
