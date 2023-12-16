@@ -29,6 +29,7 @@ class Config:
             self.default_config.write(f)
 
     def get_config(self, profile: str) -> Dict:
+        self.ensure_default_config()
         config = configparser.ConfigParser()
         config.read(self.config_file)
         if profile not in config:
