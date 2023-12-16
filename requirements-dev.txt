@@ -1,0 +1,6 @@
+pytest==7.4.3
+pytest-cov==4.1.0
+setuptools==69.0.2
+setuptools-scm==8.0.4
+PyScaffold==4.5
+tox==4.11.4

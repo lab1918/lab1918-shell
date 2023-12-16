@@ -28,3 +28,13 @@ Alway format the code before push
 ```
 $ .venv/bin/black .
 ```
+
+## Test
+
+Run test
+
+```
+pip install -r requirements-dev.txt
+pip install -e .
+pytest
+```
