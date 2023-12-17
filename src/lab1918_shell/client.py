@@ -22,6 +22,10 @@ class TopologyClient(Client):
         super().__init__()
         self.path = "topology"
 
+    def get_topology(self, topology_id):
+        response = self.session.get(url=f"{self.url}/{self.path}/{topology_id}")
+        return response
+
     def get_all_topologies(self):
         response = self.session.get(url=f"{self.url}/{self.path}")
         return response
@@ -33,5 +37,18 @@ class TopologyClient(Client):
         response = self.session.post(
             url=f"{self.url}/{self.path}",
             json=body,
+        )
+        return response
+
+    def delete_topology(self, topology_id):
+        response = self.session.delete(url=f"{self.url}/{self.path}/{topology_id}")
+        return response
+
+    def update_topology(self, topology_id, topology_name):
+        body = {
+            "topology_name": topology_name,
+        }
+        response = self.session.patch(
+            url=f"{self.url}/{self.path}/{topology_id}", json=body
         )
         return response
