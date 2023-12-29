@@ -1,0 +1,23 @@
+{
+    "nodes": [
+        "s1",
+        "s2"
+    ],
+    "links": {
+        "mgmt": {
+            "type": "broadcast",
+            "endpoint_1": "s1",
+            "endpoint_2": "s2"
+        },
+        "s1-s2-1": {
+            "type": "p2p",
+            "endpoint_1": "s1",
+            "endpoint_2": "s2"
+        },
+        "s1-s2-2": {
+            "type": "p2p",
+            "endpoint_1": "s1",
+            "endpoint_2": "s2"
+        }
+    }
+}
