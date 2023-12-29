@@ -53,6 +53,24 @@ class TopologyClient(Client):
         )
         return response
 
+    def deploy(self, topology_id, topology_config):
+        body = {
+            "topology_config": topology_config,
+        }
+        response = self.session.post(
+            url=f"{self.url}/{self.path}/{topology_id}/deploy", json=body
+        )
+        return response
+
+    def undeploy(self, topology_id, topology_config):
+        body = {
+            "topology_config": topology_config,
+        }
+        response = self.session.post(
+            url=f"{self.url}/{self.path}/{topology_id}/undeploy", json=body
+        )
+        return response
+
     def reserve(self, topology_id, host):
         body = host
         response = self.session.post(

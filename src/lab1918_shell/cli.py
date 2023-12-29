@@ -107,6 +107,40 @@ def release(ctx, topology_id, reservation_id):
         click.echo(f"failed to release topology: {e}", err=True)
 
 
+@topology.command()
+@click.pass_context
+@click.option("--topology-id", help="topology id")
+@click.option("--topology-json", help="topology config json file name")
+def deploy(ctx, topology_id, topology_json):
+    client = ctx.obj["client"]
+    logger.info("deploy topology ...")
+    try:
+        with open(topology_json) as f:
+            config = json.loads(f.read())
+        res = client.deploy(topology_id, config)
+        res.raise_for_status()
+        click.echo(json.dumps(res.json(), indent=4))
+    except Exception as e:
+        click.echo(f"failed to deploy topology: {e}", err=True)
+
+
+@topology.command()
+@click.pass_context
+@click.option("--topology-id", help="topology id")
+@click.option("--topology-json", help="topology config json file name")
+def undeploy(ctx, topology_id, topology_json):
+    client = ctx.obj["client"]
+    logger.info("undeploy topology ...")
+    try:
+        with open(topology_json) as f:
+            config = json.loads(f.read())
+        res = client.undeploy(topology_id, config)
+        res.raise_for_status()
+        click.echo(json.dumps(res.json(), indent=4))
+    except Exception as e:
+        click.echo(f"failed to undeploy topology: {e}", err=True)
+
+
 def main():
     config = Config()
     default = config.get_config(profile="default")
