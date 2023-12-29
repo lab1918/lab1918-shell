@@ -75,6 +75,38 @@ def update(ctx, topology_id, topology_name):
         click.echo(f"failed to update topology: {e}", err=True)
 
 
+@topology.command()
+@click.pass_context
+@click.option("--topology-id", help="topology id")
+@click.option("--host-json", help="host json file name")
+def reserve(ctx, topology_id, host_json):
+    client = ctx.obj["client"]
+    logger.info("reserve topology ...")
+    try:
+        with open(host_json) as f:
+            host = json.loads(f.read())
+        res = client.reserve(topology_id, host)
+        res.raise_for_status()
+        click.echo(json.dumps(res.json(), indent=4))
+    except Exception as e:
+        click.echo(f"failed to reserve topology: {e}", err=True)
+
+
+@topology.command()
+@click.pass_context
+@click.option("--topology-id", help="topology id")
+@click.option("--reservation-id", help="reservation id")
+def release(ctx, topology_id, reservation_id):
+    client = ctx.obj["client"]
+    logger.info("release topology ...")
+    try:
+        res = client.release(topology_id, reservation_id)
+        res.raise_for_status()
+        click.echo(json.dumps(res.json(), indent=4))
+    except Exception as e:
+        click.echo(f"failed to release topology: {e}", err=True)
+
+
 def main():
     config = Config()
     default = config.get_config(profile="default")

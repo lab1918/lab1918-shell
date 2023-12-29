@@ -52,3 +52,19 @@ class TopologyClient(Client):
             url=f"{self.url}/{self.path}/{topology_id}", json=body
         )
         return response
+
+    def reserve(self, topology_id, host):
+        body = host
+        response = self.session.post(
+            url=f"{self.url}/{self.path}/{topology_id}/reserve", json=body
+        )
+        return response
+
+    def release(self, topology_id, reservation_id):
+        body = {
+            "reservation_id": reservation_id,
+        }
+        response = self.session.post(
+            url=f"{self.url}/{self.path}/{topology_id}/release", json=body
+        )
+        return response
