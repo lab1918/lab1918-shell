@@ -141,6 +141,20 @@ def undeploy(ctx, topology_id, topology_json):
         click.echo(f"failed to undeploy topology: {e}", err=True)
 
 
+@topology.command()
+@click.pass_context
+@click.option("--topology-id", help="topology id")
+def ping(ctx, topology_id):
+    client = ctx.obj["client"]
+    logger.info("ping topology ...")
+    try:
+        res = client.ping(topology_id)
+        res.raise_for_status()
+        click.echo(json.dumps(res.json(), indent=4))
+    except Exception as e:
+        click.echo(f"failed to ping topology: {e}", err=True)
+
+
 def main():
     config = Config()
     default = config.get_config(profile="default")

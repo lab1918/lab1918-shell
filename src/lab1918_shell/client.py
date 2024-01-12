@@ -86,3 +86,10 @@ class TopologyClient(Client):
             url=f"{self.url}/{self.path}/{topology_id}/release", json=body
         )
         return response
+
+    def ping(self, topology_id, **kwargs):
+        body = kwargs
+        response = self.session.post(
+            url=f"{self.url}/{self.path}/{topology_id}/ping", json=body
+        )
+        return response
