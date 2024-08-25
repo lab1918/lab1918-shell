@@ -26,7 +26,7 @@ def create(ctx, topology_name):
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
-        click.echo(f"failed to create topology: {e}", err=True)
+        click.echo(e, err=True)
 
 
 @topology.command()
@@ -43,7 +43,7 @@ def list(ctx, topology_id):
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
-        click.echo(f"failed to create topology: {e}", err=True)
+        click.echo(e, err=True)
 
 
 @topology.command()
@@ -57,7 +57,7 @@ def delete(ctx, topology_id):
         res.raise_for_status()
         click.echo(f"deleted topology {topology_id}")
     except Exception as e:
-        click.echo(f"failed to delete topology: {e}", err=True)
+        click.echo(e, err=True)
 
 
 @topology.command()
@@ -72,7 +72,7 @@ def update(ctx, topology_id, topology_name):
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
-        click.echo(f"failed to update topology: {e}", err=True)
+        click.echo(e, err=True)
 
 
 @topology.command()
@@ -89,7 +89,7 @@ def reserve(ctx, topology_id, host_json):
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
-        click.echo(f"failed to reserve topology: {e}", err=True)
+        click.echo(e, err=True)
 
 
 @topology.command()
@@ -104,7 +104,7 @@ def release(ctx, topology_id, reservation_id):
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
-        click.echo(f"failed to release topology: {e}", err=True)
+        click.echo(e, err=True)
 
 
 @topology.command()
@@ -121,7 +121,7 @@ def deploy(ctx, topology_id, topology_json):
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
-        click.echo(f"failed to deploy topology: {e}", err=True)
+        click.echo(e, err=True)
 
 
 @topology.command()
@@ -138,7 +138,7 @@ def undeploy(ctx, topology_id, topology_json):
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
-        click.echo(f"failed to undeploy topology: {e}", err=True)
+        click.echo(e, err=True)
 
 
 @topology.command()
@@ -152,7 +152,7 @@ def ping(ctx, topology_id):
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
-        click.echo(f"failed to ping topology: {e}", err=True)
+        click.echo(e, err=True)
 
 
 def main():
