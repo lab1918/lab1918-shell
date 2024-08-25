@@ -93,3 +93,12 @@ class TopologyClient(Client):
             url=f"{self.url}/{self.path}/{topology_id}/ping", json=body
         )
         return response
+
+    def run(self, topology_id, workflow_name):
+        body = {
+            "workflow_name": workflow_name,
+        }
+        response = self.session.post(
+            url=f"{self.url}/{self.path}/{topology_id}/run", json=body
+        )
+        return response

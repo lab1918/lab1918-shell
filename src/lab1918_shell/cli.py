@@ -155,6 +155,22 @@ def ping(ctx, topology_id):
         click.echo(e, err=True)
 
 
+@topology.command()
+@click.pass_context
+@click.option("--topology-id", help="topology id")
+@click.option("--workflow-name", help="workflow name")
+def run(ctx, topology_id, workflow_name):
+    client = ctx.obj["client"]
+    logger.info(f"run workflow {workflow_name} topology {topology_id} ...")
+    try:
+        res = client.run(topology_id, workflow_name)
+        res.raise_for_status()
+        click.echo(json.dumps(res.json(), indent=4))
+    except Exception as e:
+        click.echo(f"{e}", err=True)
+        click.echo(f"{e.response.json()}", err=True)
+
+
 def main():
     config = Config()
     default = config.get_config(profile="default")
