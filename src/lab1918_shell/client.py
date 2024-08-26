@@ -1,4 +1,6 @@
 import requests
+import json
+
 from lab1918_shell.config import Config
 
 
@@ -94,10 +96,10 @@ class TopologyClient(Client):
         )
         return response
 
-    def run(self, topology_id, workflow_name):
-        body = {
-            "workflow_name": workflow_name,
-        }
+    def run(self, topology_id, workflow_name, params):
+        body = json.loads(params)
+        body["workflow_name"] = workflow_name
+
         response = self.session.post(
             url=f"{self.url}/{self.path}/{topology_id}/run", json=body
         )
