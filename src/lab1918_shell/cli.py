@@ -97,7 +97,7 @@ def reserve(ctx, topology_id, host_json):
 @click.option("--topology-id", help="topology id")
 @click.option("--reservation-id", help="reservation id")
 def release(ctx, topology_id, reservation_id):
-    client = ctx.obj["client"]
+    client: TopologyClient = ctx.obj["client"]
     logger.info("release topology ...")
     try:
         res = client.release(topology_id, reservation_id)
