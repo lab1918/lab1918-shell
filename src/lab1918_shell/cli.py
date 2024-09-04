@@ -27,6 +27,7 @@ def create(ctx, topology_name):
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
         click.echo(e, err=True)
+        click.echo(f"{e.response.json()}", err=True)
 
 
 @topology.command()
@@ -44,6 +45,7 @@ def list(ctx, topology_id):
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
         click.echo(e, err=True)
+        click.echo(f"{e.response.json()}", err=True)
 
 
 @topology.command()
@@ -58,6 +60,7 @@ def delete(ctx, topology_id):
         click.echo(f"deleted topology {topology_id}")
     except Exception as e:
         click.echo(e, err=True)
+        click.echo(f"{e.response.json()}", err=True)
 
 
 @topology.command()
@@ -73,6 +76,7 @@ def update(ctx, topology_id, topology_name):
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
         click.echo(e, err=True)
+        click.echo(f"{e.response.json()}", err=True)
 
 
 @topology.command()
@@ -90,6 +94,7 @@ def reserve(ctx, topology_id, host_json):
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
         click.echo(e, err=True)
+        click.echo(f"{e.response.json()}", err=True)
 
 
 @topology.command()
@@ -105,6 +110,7 @@ def release(ctx, topology_id, reservation_id):
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
         click.echo(e, err=True)
+        click.echo(f"{e.response.json()}", err=True)
 
 
 @topology.command()
@@ -122,6 +128,7 @@ def deploy(ctx, topology_id, topology_json):
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
         click.echo(e, err=True)
+        click.echo(f"{e.response.json()}", err=True)
 
 
 @topology.command()
@@ -139,6 +146,7 @@ def undeploy(ctx, topology_id, topology_json):
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
         click.echo(e, err=True)
+        click.echo(f"{e.response.json()}", err=True)
 
 
 @topology.command()
@@ -153,6 +161,7 @@ def ping(ctx, topology_id):
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
         click.echo(e, err=True)
+        click.echo(f"{e.response.json()}", err=True)
 
 
 @topology.command()
