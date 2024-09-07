@@ -9,7 +9,9 @@ from collections import namedtuple
 from tabulate import tabulate
 
 
-@click.group()
+@click.group(
+    context_settings={"show_default": True, "help_option_names": ["-h", "--help"]}
+)
 @click.pass_context
 def topology(ctx):
     ctx.obj["client"] = TopologyClient()
@@ -97,13 +99,12 @@ def update(ctx, topology_id, topology_name):
 @topology.command()
 @click.pass_context
 @click.option("--topology-id", help="topology id")
-@click.option("--host-json", help="host json file name")
+@click.option("--host-json", help="host json string", default="{}")
 def reserve(ctx, topology_id, host_json):
-    client = ctx.obj["client"]
+    client: TopologyClient = ctx.obj["client"]
     logger.info("reserve topology ...")
     try:
-        with open(host_json) as f:
-            host = json.loads(f.read())
+        host = json.loads(host_json)
         res = client.reserve(topology_id, host)
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
