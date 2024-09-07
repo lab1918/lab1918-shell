@@ -33,7 +33,8 @@ def create(ctx, topology_name):
 @topology.command()
 @click.pass_context
 @click.option("--topology-id", help="topology id")
-def list(ctx, topology_id):
+@click.option("--output-format", type=click.Choice(["json", "table"]), default="table")
+def list(ctx, topology_id, output_format):
     client = ctx.obj["client"]
     logger.info("list topologies ...")
     try:
@@ -42,7 +43,21 @@ def list(ctx, topology_id):
         else:
             res = client.get_all_topologies()
         res.raise_for_status()
-        click.echo(json.dumps(res.json(), indent=4))
+        if output_format == "json":
+            click.echo(json.dumps(res.json(), indent=4))
+            return
+        headers = ["name", "id", "owner", "version"]
+        Row = namedtuple("Row", headers)
+        tbl = []
+        for each in res.json():
+            row = Row(
+                name=each["topology_name"]["S"],
+                id=each["topology_id"]["S"],
+                owner=each["owner"]["S"],
+                version=each["version"]["N"],
+            )
+            tbl.append(row)
+        click.echo(tabulate(tbl, headers, tablefmt="fancy_grid"))
     except Exception as e:
         click.echo(e, err=True)
         click.echo(f"{e.response.json()}", err=True)
