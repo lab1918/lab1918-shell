@@ -53,7 +53,7 @@ def list(ctx, topology_id, format):
             "owner",
             "topology_id",
             "workflow",
-            "workflow_finished",
+            "running",
             "version",
         ]
         Row = namedtuple("Row", headers)
@@ -66,11 +66,12 @@ def list(ctx, topology_id, format):
                 workflow=each.get("workflow", {})
                 .get("M", {})
                 .get("workflow_name", {})
-                .get("S"),
-                workflow_finished=each.get("workflow", {})
+                .get("S", "None"),
+                running=each.get("workflow", {})
                 .get("M", {})
                 .get("finished", {})
-                .get("BOOL"),
+                .get("BOOL")
+                is False,
                 version=each["version"]["N"],
             )
             tbl.append(row)
