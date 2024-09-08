@@ -63,8 +63,14 @@ def list(ctx, topology_id, format):
                 name=each["topology_name"]["S"],
                 owner=each["owner"]["S"],
                 topology_id=each["topology_id"]["S"],
-                workflow=each["workflow"]["M"]["workflow_name"]["S"],
-                workflow_finished=each["workflow"]["M"]["finished"]["BOOL"],
+                workflow=each.get("workflow", {})
+                .get("M", {})
+                .get("workflow_name", {})
+                .get("S"),
+                workflow_finished=each.get("workflow", {})
+                .get("M", {})
+                .get("finished", {})
+                .get("BOOL"),
                 version=each["version"]["N"],
             )
             tbl.append(row)
