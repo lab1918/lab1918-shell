@@ -48,14 +48,23 @@ def list(ctx, topology_id, format):
         if format == "json":
             click.echo(json.dumps(res.json(), indent=4))
             return
-        headers = ["name", "id", "owner", "version"]
+        headers = [
+            "name",
+            "owner",
+            "topology_id",
+            "workflow",
+            "workflow_finished",
+            "version",
+        ]
         Row = namedtuple("Row", headers)
         tbl = []
         for each in res.json():
             row = Row(
                 name=each["topology_name"]["S"],
-                id=each["topology_id"]["S"],
                 owner=each["owner"]["S"],
+                topology_id=each["topology_id"]["S"],
+                workflow=each["workflow"]["M"]["workflow_name"]["S"],
+                workflow_finished=each["workflow"]["M"]["finished"]["BOOL"],
                 version=each["version"]["N"],
             )
             tbl.append(row)
