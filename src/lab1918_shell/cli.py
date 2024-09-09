@@ -58,7 +58,9 @@ def list(ctx, topology_id, format):
         Row = namedtuple("Row", headers)
         tbl = []
         for each in res.json():
-            if (
+            if not each.get("workflow"):
+                workflow_status = "(None)"
+            elif (
                 each.get("workflow", {}).get("M", {}).get("finished", {}).get("BOOL")
                 is True
             ):
