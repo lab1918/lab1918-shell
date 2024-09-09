@@ -53,20 +53,21 @@ def list(ctx, topology_id, format):
             "owner",
             "topology_id",
             "workflow",
+            "reservation",
             "version",
         ]
         Row = namedtuple("Row", headers)
         tbl = []
         for each in res.json():
             if not each.get("workflow"):
-                workflow_status = "(None)"
+                workflow_status = None
             elif (
                 each.get("workflow", {}).get("M", {}).get("finished", {}).get("BOOL")
                 is True
             ):
-                workflow_status = "(finished)"
+                workflow_status = "finished"
             else:
-                workflow_status = "(running)"
+                workflow_status = "running"
             row = Row(
                 name=each["topology_name"]["S"],
                 owner=each["owner"]["S"],
@@ -75,7 +76,8 @@ def list(ctx, topology_id, format):
                 .get("M", {})
                 .get("workflow_name", {})
                 .get("S", "None")
-                + workflow_status,
+                + f"({workflow_status})",
+                reservation=bool(each.get("reservation")),
                 version=each["version"]["N"],
             )
             tbl.append(row)
