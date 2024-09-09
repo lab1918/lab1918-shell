@@ -210,7 +210,7 @@ def ping(ctx, topology_id):
     "--params", help="json string workflow input", default="{}", show_default=True
 )
 def run(ctx, topology_id, workflow_name, params):
-    client = ctx.obj["client"]
+    client: TopologyClient = ctx.obj["client"]
     logger.info(
         f"run workflow {workflow_name} topology {topology_id} with extra params {params} ..."
     )
