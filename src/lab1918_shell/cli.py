@@ -159,8 +159,11 @@ def deploy(ctx, topology_id, topology_json):
     client = ctx.obj["client"]
     logger.info("deploy topology ...")
     try:
-        with open(topology_json) as f:
-            config = json.loads(f.read())
+        if not topology_json:
+            config = "{}"
+        else:
+            with open(topology_json) as f:
+                config = json.loads(f.read())
         res = client.deploy(topology_id, config)
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
