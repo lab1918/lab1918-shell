@@ -81,7 +81,8 @@ def list(ctx, topology_id, format):
                 version=each["version"]["N"],
             )
             tbl.append(row)
-        click.echo(tabulate(tbl, headers, tablefmt="fancy_grid"))
+        hdrs = [each.replace("_", "-") for each in headers]
+        click.echo(tabulate(tbl, hdrs, tablefmt="fancy_grid"))
     except Exception as e:
         click.echo(e, err=True)
         click.echo(f"{e.response.json()}", err=True)
