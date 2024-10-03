@@ -46,30 +46,24 @@ class TopologyClient(Client):
         response = self.session.delete(url=f"{self.url}/{self.path}/{topology_id}")
         return response
 
-    def update_topology(self, topology_id, topology_name):
+    def update_topology(self, topology_id, topology_config):
         body = {
-            "topology_name": topology_name,
+            "topology_config": topology_config,
         }
         response = self.session.patch(
             url=f"{self.url}/{self.path}/{topology_id}", json=body
         )
         return response
 
-    def deploy(self, topology_id, topology_config):
-        body = {
-            "topology_config": topology_config,
-        }
+    def deploy(self, topology_id):
         response = self.session.post(
-            url=f"{self.url}/{self.path}/{topology_id}/deploy", json=body
+            url=f"{self.url}/{self.path}/{topology_id}/deploy",
         )
         return response
 
-    def undeploy(self, topology_id, topology_config):
-        body = {
-            "topology_config": topology_config,
-        }
+    def undeploy(self, topology_id):
         response = self.session.post(
-            url=f"{self.url}/{self.path}/{topology_id}/undeploy", json=body
+            url=f"{self.url}/{self.path}/{topology_id}/undeploy",
         )
         return response
 

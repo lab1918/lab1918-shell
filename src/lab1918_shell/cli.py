@@ -106,12 +106,17 @@ def delete(ctx, topology_id):
 @topology.command()
 @click.pass_context
 @click.option("--topology-id", help="topology id")
-@click.option("--topology-name", help="topology name")
-def update(ctx, topology_id, topology_name):
-    client = ctx.obj["client"]
+@click.option("--topology-json", help="topology config json file name")
+def update(ctx, topology_id, topology_json):
+    client: TopologyClient = ctx.obj["client"]
     logger.info("update topology ...")
     try:
-        res = client.update_topology(topology_id, topology_name)
+        if not topology_json:
+            config = {}
+        else:
+            with open(topology_json) as f:
+                config = json.loads(f.read())
+        res = client.update_topology(topology_id, config)
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
@@ -155,17 +160,11 @@ def release(ctx, topology_id, reservation_id):
 @topology.command()
 @click.pass_context
 @click.option("--topology-id", help="topology id")
-@click.option("--topology-json", help="topology config json file name")
-def deploy(ctx, topology_id, topology_json):
+def deploy(ctx, topology_id):
     client = ctx.obj["client"]
     logger.info("deploy topology ...")
     try:
-        if not topology_json:
-            config = "{}"
-        else:
-            with open(topology_json) as f:
-                config = json.loads(f.read())
-        res = client.deploy(topology_id, config)
+        res = client.deploy(topology_id)
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
@@ -176,14 +175,11 @@ def deploy(ctx, topology_id, topology_json):
 @topology.command()
 @click.pass_context
 @click.option("--topology-id", help="topology id")
-@click.option("--topology-json", help="topology config json file name")
-def undeploy(ctx, topology_id, topology_json):
+def undeploy(ctx, topology_id):
     client = ctx.obj["client"]
     logger.info("undeploy topology ...")
     try:
-        with open(topology_json) as f:
-            config = json.loads(f.read())
-        res = client.undeploy(topology_id, config)
+        res = client.undeploy(topology_id)
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
