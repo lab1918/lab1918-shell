@@ -21,7 +21,7 @@ def topology(ctx):
 @click.pass_context
 @click.option("--topology-name", help="topology name")
 def create(ctx, topology_name):
-    client = ctx.obj["client"]
+    client: TopologyClient = ctx.obj["client"]
     logger.info("create topology ...")
     try:
         res = client.create_topology(topology_name)
@@ -37,7 +37,7 @@ def create(ctx, topology_name):
 @click.option("--topology-id", help="topology id")
 @click.option("--format", type=click.Choice(["json", "table"]), default="table")
 def list(ctx, topology_id, format):
-    client = ctx.obj["client"]
+    client: TopologyClient = ctx.obj["client"]
     logger.info("list topologies ...")
     try:
         if topology_id:
@@ -92,7 +92,7 @@ def list(ctx, topology_id, format):
 @click.pass_context
 @click.option("--topology-id", help="topology id")
 def delete(ctx, topology_id):
-    client = ctx.obj["client"]
+    client: TopologyClient = ctx.obj["client"]
     logger.info("delete topology ...")
     try:
         res = client.delete_topology(topology_id)
@@ -161,7 +161,7 @@ def release(ctx, topology_id, reservation_id):
 @click.pass_context
 @click.option("--topology-id", help="topology id")
 def deploy(ctx, topology_id):
-    client = ctx.obj["client"]
+    client: TopologyClient = ctx.obj["client"]
     logger.info("deploy topology ...")
     try:
         res = client.deploy(topology_id)
@@ -176,7 +176,7 @@ def deploy(ctx, topology_id):
 @click.pass_context
 @click.option("--topology-id", help="topology id")
 def undeploy(ctx, topology_id):
-    client = ctx.obj["client"]
+    client: TopologyClient = ctx.obj["client"]
     logger.info("undeploy topology ...")
     try:
         res = client.undeploy(topology_id)
@@ -191,7 +191,7 @@ def undeploy(ctx, topology_id):
 @click.pass_context
 @click.option("--topology-id", help="topology id")
 def ping(ctx, topology_id):
-    client = ctx.obj["client"]
+    client: TopologyClient = ctx.obj["client"]
     logger.info("ping topology ...")
     try:
         res = client.ping(topology_id)
