@@ -90,11 +90,9 @@ class TopologyClient(Client):
         )
         return response
 
-    def run(self, topology_id, workflow_name, params):
+    def bootstrap(self, topology_id, params):
         body = json.loads(params)
-        body["workflow_name"] = workflow_name
-
         response = self.session.post(
-            url=f"{self.url}/{self.path}/{topology_id}/run", json=body
+            url=f"{self.url}/{self.path}/{topology_id}/bootstrap", json=body
         )
         return response

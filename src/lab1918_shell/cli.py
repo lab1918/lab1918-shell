@@ -205,17 +205,16 @@ def ping(ctx, topology_id):
 @topology.command()
 @click.pass_context
 @click.option("--topology-id", help="topology id")
-@click.option("--workflow-name", help="workflow name")
 @click.option(
     "--params", help="json string workflow input", default="{}", show_default=True
 )
-def run(ctx, topology_id, workflow_name, params):
+def bootstrap(ctx, topology_id, params):
     client: TopologyClient = ctx.obj["client"]
     logger.info(
-        f"run workflow {workflow_name} topology {topology_id} with extra params {params} ..."
+        f"run bootstrap workflow for topology {topology_id} with extra params {params} ..."
     )
     try:
-        res = client.run(topology_id, workflow_name, params)
+        res = client.bootstrap(topology_id, params)
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
