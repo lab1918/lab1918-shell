@@ -55,9 +55,12 @@ class TopologyClient(Client):
         )
         return response
 
-    def deploy(self, topology_id):
+    def deploy(self, topology_id, dry_run):
+        body = {
+            "dry_run": dry_run,
+        }
         response = self.session.post(
-            url=f"{self.url}/{self.path}/{topology_id}/deploy",
+            url=f"{self.url}/{self.path}/{topology_id}/deploy", json=body
         )
         return response
 

@@ -174,11 +174,12 @@ def release(ctx, topology_id, reservation_id):
 @topology.command()
 @click.pass_context
 @click.option("--topology-id", help="topology id")
-def deploy(ctx, topology_id):
+@click.option("--dry-run", is_flag=True, help="dry run deployment")
+def deploy(ctx, topology_id, dry_run):
     client: TopologyClient = ctx.obj["client"]
     logger.info("deploy topology ...")
     try:
-        res = client.deploy(topology_id)
+        res = client.deploy(topology_id, dry_run)
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
