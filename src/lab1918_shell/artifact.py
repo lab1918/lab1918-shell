@@ -75,12 +75,13 @@ def list(ctx, artifact_id, format):
     default="container",
 )
 @click.option("--storage", type=click.Choice(["s3", "docker"]), default="s3")
-def create(ctx, file_name, file_version, vendor, artifact_type, storage):
+@click.option("--arch", type=click.Choice(["x86", "x86_64" "arm"]), default="x86")
+def create(ctx, file_name, file_version, vendor, artifact_type, storage, arch):
     client: ArtifactClient = ctx.obj["client"]
     logger.info("create artifact ...")
     try:
         res = client.create_artifact(
-            file_name, file_version, vendor, artifact_type, storage
+            file_name, file_version, vendor, artifact_type, storage, arch
         )
         res.raise_for_status()
         click.echo(f"created artifact {file_name}")

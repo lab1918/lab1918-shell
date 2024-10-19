@@ -115,13 +115,16 @@ class ArtifactClient(Client):
         response = self.session.delete(url=f"{self.url}/{self.path}/{artifact_id}")
         return response
 
-    def create_artifact(self, file_name, file_version, vendor, artifact_type, storage):
+    def create_artifact(
+        self, file_name, file_version, vendor, artifact_type, storage, arch
+    ):
         body = {
             "file_name": file_name,
             "file_version": file_version,
             "vendor": vendor,
             "artifact_type": artifact_type,
             "storage": storage,
+            "arch": arch,
         }
         response = self.session.post(
             url=f"{self.url}/{self.path}",
