@@ -36,7 +36,9 @@ def create(ctx, topology_name):
 @click.pass_context
 @click.option("--topology-id", help="topology id")
 @click.option("--format", type=click.Choice(["json", "table"]), default="table")
-def list(ctx, topology_id, format):
+@click.option("--config", is_flag=True, help="only display topology config")
+@click.option("--status", is_flag=True, help="only display topology status")
+def list(ctx, topology_id, format, config, status):
     client: TopologyClient = ctx.obj["client"]
     logger.info("list topologies ...")
     try:
@@ -45,8 +47,20 @@ def list(ctx, topology_id, format):
         else:
             res = client.get_all_topologies()
         res.raise_for_status()
-        if format == "json":
-            click.echo(json.dumps(res.json(), indent=4))
+        if format == "json" or config or status:
+            if config:
+                result = [
+                    json.loads(each.get("topology_config", {}).get("S", "{}"))
+                    for each in res.json()
+                ]
+            elif status:
+                result = [
+                    json.loads(each.get("topology_status", {}).get("S", "{}"))
+                    for each in res.json()
+                ]
+            else:
+                result = res.json()
+            click.echo(json.dumps(result, indent=4))
             return
         headers = [
             "name",
