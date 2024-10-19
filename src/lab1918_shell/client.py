@@ -96,3 +96,35 @@ class TopologyClient(Client):
             url=f"{self.url}/{self.path}/{topology_id}/bootstrap", json=body
         )
         return response
+
+
+class ArtifactClient(Client):
+    def __init__(self) -> None:
+        super().__init__()
+        self.path = "artifact"
+
+    def get_artifact(self, artifact_id):
+        response = self.session.get(url=f"{self.url}/{self.path}/{artifact_id}")
+        return response
+
+    def get_all_artifacts(self):
+        response = self.session.get(url=f"{self.url}/{self.path}")
+        return response
+
+    def delete_artifact(self, artifact_id):
+        response = self.session.delete(url=f"{self.url}/{self.path}/{artifact_id}")
+        return response
+
+    def create_artifact(self, file_name, file_version, vendor, artifact_type, storage):
+        body = {
+            "file_name": file_name,
+            "file_version": file_version,
+            "vendor": vendor,
+            "artifact_type": artifact_type,
+            "storage": storage,
+        }
+        response = self.session.post(
+            url=f"{self.url}/{self.path}",
+            json=body,
+        )
+        return response
