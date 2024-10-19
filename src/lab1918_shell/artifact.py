@@ -34,25 +34,25 @@ def list(ctx, artifact_id, format):
             click.echo(json.dumps(res.json(), indent=4))
             return
         headers = [
-            "artifact_id",
-            "artifact_type",
-            "file_name",
-            "file_version",
             "owner",
+            "file_name",
+            "artifact_type",
+            "version",
             "storage",
             "vendor",
+            "arch",
         ]
         Row = namedtuple("Row", headers)
         tbl = []
         for each in res.json():
             row = Row(
-                artifact_id=each["artifact_id"]["S"],
-                artifact_type=each["artifact_type"]["S"],
-                file_name=each["file_name"]["S"],
-                file_version=each["file_version"]["S"],
                 owner=each["owner"]["S"],
+                file_name=each["file_name"]["S"],
+                artifact_type=each["artifact_type"]["S"],
+                version=each["file_version"]["S"],
                 storage=each["storage"]["S"],
                 vendor=each["vendor"]["S"],
+                arch=each.get("arch", {}).get("S", "x86"),
             )
             tbl.append(row)
         hdrs = [each.replace("_", "-") for each in headers]
@@ -66,7 +66,9 @@ def list(ctx, artifact_id, format):
 @click.pass_context
 @click.option("--file-name", help="file name")
 @click.option("--file-version", help="file version", type=click.STRING)
-@click.option("--vendor", help="vendor", type=click.Choice(["arista", "cisco"]))
+@click.option(
+    "--vendor", help="vendor", type=click.Choice(["arista", "cisco", "nokia"])
+)
 @click.option(
     "--artifact-type",
     type=click.Choice(["qcow", "vmdk", "container"]),
