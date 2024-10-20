@@ -190,11 +190,12 @@ def deploy(ctx, topology_id, dry_run):
 @topology.command()
 @click.pass_context
 @click.option("--topology-id", help="topology id")
-def undeploy(ctx, topology_id):
+@click.option("--dry-run", is_flag=True, help="dry run undeployment")
+def undeploy(ctx, topology_id, dry_run):
     client: TopologyClient = ctx.obj["client"]
     logger.info("undeploy topology ...")
     try:
-        res = client.undeploy(topology_id)
+        res = client.undeploy(topology_id, dry_run)
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
