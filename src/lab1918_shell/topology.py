@@ -88,14 +88,14 @@ def list(ctx, topology_id, format, config, status, reservation, workflow):
                         topology_id=topology_id,
                         workflow_name=each["M"]["workflow_name"]["S"],
                         workflow_id=each["M"]["workflow_id"]["S"],
-                        started_at=each["M"]["started_at"]["S"],
+                        started_at=each["M"]["started_at"]["S"][:19],
                         finished=each["M"]["finished"]["BOOL"],
                     )
                     tbl.append(row)
             hdrs = [each.replace("_", "-") for each in headers]
             click.echo(
                 tabulate(
-                    sorted(tbl, key=attrgetter("started_at")),
+                    sorted(tbl, key=attrgetter("started_at"), reverse=True),
                     hdrs,
                     tablefmt="fancy_grid",
                 )
@@ -200,11 +200,12 @@ def reserve(ctx, topology_id, host_json):
 @click.pass_context
 @click.option("--topology-id", help="topology id")
 @click.option("--reservation-id", help="reservation id")
-def release(ctx, topology_id, reservation_id):
+@click.option("--force", is_flag=True, help="release resource with force")
+def release(ctx, topology_id, reservation_id, force):
     client: TopologyClient = ctx.obj["client"]
     logger.info("release topology ...")
     try:
-        res = client.release(topology_id, reservation_id)
+        res = client.release(topology_id, reservation_id, force)
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
