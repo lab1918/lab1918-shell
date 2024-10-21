@@ -7,6 +7,7 @@ from lab1918_shell.logger import logger
 
 from collections import namedtuple
 from tabulate import tabulate
+from operator import attrgetter
 
 
 @click.group(
@@ -39,7 +40,8 @@ def create(ctx, topology_name):
 @click.option("--config", is_flag=True, help="only display topology config")
 @click.option("--status", is_flag=True, help="only display topology status")
 @click.option("--reservation", is_flag=True, help="only display reservation")
-def list(ctx, topology_id, format, config, status, reservation):
+@click.option("--workflow", is_flag=True, help="only display workflow")
+def list(ctx, topology_id, format, config, status, reservation, workflow):
     client: TopologyClient = ctx.obj["client"]
     logger.info("list topologies ...")
     try:
@@ -64,6 +66,40 @@ def list(ctx, topology_id, format, config, status, reservation):
             else:
                 result = res.json()
             click.echo(json.dumps(result, indent=4))
+            return
+        if workflow:
+            headers = [
+                "topology_id",
+                "workflow_name",
+                "workflow_id",
+                "started_at",
+                "finished",
+            ]
+            Row = namedtuple("Row", headers)
+            tbl = []
+            for topology in res.json():
+                topology_id = topology["topology_id"]["S"]
+                workflows = topology.get("workflows", {}).get("L", [])
+                workflow = topology.get("workflow", {})
+                if workflow is not None:
+                    workflows.append(workflow)
+                for each in workflows:
+                    row = Row(
+                        topology_id=topology_id,
+                        workflow_name=each["M"]["workflow_name"]["S"],
+                        workflow_id=each["M"]["workflow_id"]["S"],
+                        started_at=each["M"]["started_at"]["S"],
+                        finished=each["M"]["finished"]["BOOL"],
+                    )
+                    tbl.append(row)
+            hdrs = [each.replace("_", "-") for each in headers]
+            click.echo(
+                tabulate(
+                    sorted(tbl, key=attrgetter("started_at")),
+                    hdrs,
+                    tablefmt="fancy_grid",
+                )
+            )
             return
         headers = [
             "name",
