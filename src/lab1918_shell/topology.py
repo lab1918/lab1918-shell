@@ -38,7 +38,8 @@ def create(ctx, topology_name):
 @click.option("--format", type=click.Choice(["json", "table"]), default="table")
 @click.option("--config", is_flag=True, help="only display topology config")
 @click.option("--status", is_flag=True, help="only display topology status")
-def list(ctx, topology_id, format, config, status):
+@click.option("--reservation", is_flag=True, help="only display reservation")
+def list(ctx, topology_id, format, config, status, reservation):
     client: TopologyClient = ctx.obj["client"]
     logger.info("list topologies ...")
     try:
@@ -47,7 +48,7 @@ def list(ctx, topology_id, format, config, status):
         else:
             res = client.get_all_topologies()
         res.raise_for_status()
-        if format == "json" or config or status:
+        if format == "json" or config or status or reservation:
             if config:
                 result = [
                     json.loads(each.get("topology_config", {}).get("S", "{}"))
@@ -58,6 +59,8 @@ def list(ctx, topology_id, format, config, status):
                     json.loads(each.get("topology_status", {}).get("S", "{}"))
                     for each in res.json()
                 ]
+            elif reservation:
+                result = [each.get("reservation", {}) for each in res.json()]
             else:
                 result = res.json()
             click.echo(json.dumps(result, indent=4))
