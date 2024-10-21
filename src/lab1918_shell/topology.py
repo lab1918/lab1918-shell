@@ -71,6 +71,7 @@ def list(ctx, topology_id, format, config, status, reservation):
             "topology_id",
             "workflow",
             "reservation",
+            "deployed",
             "version",
         ]
         Row = namedtuple("Row", headers)
@@ -95,6 +96,7 @@ def list(ctx, topology_id, format, config, status, reservation):
                 .get("S", "None")
                 + f"({workflow_status})",
                 reservation=bool(each.get("reservation")),
+                deployed=each.get("deployed", {}).get("BOOL", False),
                 version=each["version"]["N"],
             )
             tbl.append(row)
