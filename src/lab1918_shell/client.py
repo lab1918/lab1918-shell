@@ -135,3 +135,13 @@ class ArtifactClient(Client):
             json=body,
         )
         return response
+
+
+class User(Client):
+    def __init__(self) -> None:
+        super().__init__()
+        self.path = "whoami"
+
+    def whoami(self):
+        response = self.session.get(url=f"{self.url}/{self.path}")
+        return response
