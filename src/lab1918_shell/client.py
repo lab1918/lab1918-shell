@@ -140,8 +140,15 @@ class ArtifactClient(Client):
 class User(Client):
     def __init__(self) -> None:
         super().__init__()
-        self.path = "whoami"
+        self.path = "user"
 
     def whoami(self):
-        response = self.session.get(url=f"{self.url}/{self.path}")
+        response = self.session.get(url=f"{self.url}/whoami")
+        return response
+
+    def update(self, json):
+        user_id = json.pop("user_id")
+        response = self.session.patch(
+            url=f"{self.url}/{self.path}/{user_id}", json=json
+        )
         return response
