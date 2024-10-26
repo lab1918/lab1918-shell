@@ -29,13 +29,12 @@ def list(ctx, format):
         if format == "json":
             click.echo(json.dumps(res.json(), indent=4))
         else:
-            headers = [
-                "name",
-                "email",
-                "role",
-            ]
+            tbl = []
+            headers = ["setting", "value"]
             Row = namedtuple("Row", headers)
-            tbl = [Row(**res.json())]
+            for key, value in res.json().items():
+                row = Row(setting=key, value=value)
+                tbl.append(row)
             click.echo(tabulate(tbl, headers, tablefmt="fancy_grid"))
     except Exception as e:
         click.echo(e, err=True)
