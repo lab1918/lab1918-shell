@@ -9,7 +9,7 @@ class Config:
         self.config_file = self.config_dir / "shell.ini"
 
     @property
-    def default_config(self):
+    def default_config(self) -> Dict:
         config = configparser.ConfigParser()
         config["default"] = {
             "api_server": "api.lab1918.com",
@@ -17,10 +17,10 @@ class Config:
         }
         return config
 
-    def config_file_exist(self):
+    def config_file_exist(self) -> bool:
         return self.config_file.is_file()
 
-    def ensure_default_config(self):
+    def ensure_default_config(self) -> None:
         if self.config_file_exist():
             return
 
