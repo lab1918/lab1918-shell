@@ -53,9 +53,11 @@ def list(ctx, format):
 @click.option("--aws-region", help="aws region, for example us-east-1")
 @click.option(
     "--aws-ami-id",
-    help="aws ami, must be valid for giving aws region, for example ami-0e879a1b306fffb22",
+    help="region specific aws ami id, for example ami-0e879a1b306fffb22",
 )
-@click.option("--aws-instance-size", help="ec2 instance type, example t4g.small")
+@click.option(
+    "--aws-instance-size", help="default ec2 instance type, example t4g.small"
+)
 @click.option(
     "--aws-reservation-size",
     help="reservation size, default is one ec2",
