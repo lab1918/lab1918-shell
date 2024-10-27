@@ -79,8 +79,14 @@ class TopologyClient(Client):
         )
         return response
 
-    def release(self, topology_id: str, reservation_id: str, force: bool):
-        body = {"reservation_id": reservation_id, "force": force}
+    def release(
+        self, topology_id: str, reservation_id: str, account_id: str, force: bool
+    ):
+        body = {
+            "reservation_id": reservation_id,
+            "force": force,
+            "account_id": account_id,
+        }
         response = self.session.post(
             url=f"{self.url}/{self.path}/{topology_id}/release", json=body
         )

@@ -209,12 +209,13 @@ def reserve(ctx, topology_id, extra_args):
 @click.pass_context
 @click.option("--topology-id", help="topology id")
 @click.option("--reservation-id", help="reservation id")
+@click.option("--account-id", help="account id")
 @click.option("--force", is_flag=True, help="release resource with force")
-def release(ctx, topology_id, reservation_id, force):
+def release(ctx, topology_id, reservation_id, account_id, force):
     client: TopologyClient = ctx.obj["client"]
     logger.info("release topology ...")
     try:
-        res = client.release(topology_id, reservation_id, force)
+        res = client.release(topology_id, reservation_id, account_id, force)
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
