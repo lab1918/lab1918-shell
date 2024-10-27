@@ -35,7 +35,7 @@ def create(ctx, topology_name):
 
 @topology.command()
 @click.pass_context
-@click.option("--topology-id", help="topology id")
+@click.option("--topology-id", "-t", help="topology id")
 @click.option("--format", type=click.Choice(["json", "table"]), default="table")
 @click.option("--config", is_flag=True, help="only display topology config")
 @click.option("--status", is_flag=True, help="only display topology status")
@@ -145,7 +145,7 @@ def list(ctx, topology_id, format, config, status, reservation, workflow):
 
 @topology.command()
 @click.pass_context
-@click.option("--topology-id", help="topology id")
+@click.option("--topology-id", "-t", help="topology id")
 def delete(ctx, topology_id):
     client: TopologyClient = ctx.obj["client"]
     logger.info("delete topology ...")
@@ -160,7 +160,7 @@ def delete(ctx, topology_id):
 
 @topology.command()
 @click.pass_context
-@click.option("--topology-id", help="topology id")
+@click.option("--topology-id", "-t", help="topology id")
 @click.option("--topology-json", help="topology config json file name")
 def update(ctx, topology_id, topology_json):
     client: TopologyClient = ctx.obj["client"]
@@ -181,7 +181,7 @@ def update(ctx, topology_id, topology_json):
 
 @topology.command()
 @click.pass_context
-@click.option("--topology-id", help="topology id")
+@click.option("--topology-id", "-t", help="topology id")
 @click.option(
     "--extra-args",
     help="extra args for topology reservation, use key=value format",
@@ -207,7 +207,7 @@ def reserve(ctx, topology_id, extra_args):
 
 @topology.command()
 @click.pass_context
-@click.option("--topology-id", help="topology id")
+@click.option("--topology-id", "-t", help="topology id")
 @click.option("--reservation-id", help="reservation id")
 @click.option("--account-id", help="account id")
 @click.option("--force", is_flag=True, help="release resource with force")
@@ -225,7 +225,7 @@ def release(ctx, topology_id, reservation_id, account_id, force):
 
 @topology.command()
 @click.pass_context
-@click.option("--topology-id", help="topology id")
+@click.option("--topology-id", "-t", help="topology id")
 @click.option("--dry-run", is_flag=True, help="dry run deployment")
 def deploy(ctx, topology_id, dry_run):
     client: TopologyClient = ctx.obj["client"]
@@ -241,7 +241,7 @@ def deploy(ctx, topology_id, dry_run):
 
 @topology.command()
 @click.pass_context
-@click.option("--topology-id", help="topology id")
+@click.option("--topology-id", "-t", help="topology id")
 @click.option("--dry-run", is_flag=True, help="dry run undeployment")
 def undeploy(ctx, topology_id, dry_run):
     client: TopologyClient = ctx.obj["client"]
@@ -257,7 +257,7 @@ def undeploy(ctx, topology_id, dry_run):
 
 @topology.command()
 @click.pass_context
-@click.option("--topology-id", help="topology id")
+@click.option("--topology-id", "-t", help="topology id")
 def ping(ctx, topology_id):
     client: TopologyClient = ctx.obj["client"]
     logger.info("ping topology ...")
@@ -272,7 +272,7 @@ def ping(ctx, topology_id):
 
 @topology.command()
 @click.pass_context
-@click.option("--topology-id", help="topology id")
+@click.option("--topology-id", "-t", help="topology id")
 @click.option(
     "--params", help="json string workflow input", default="{}", show_default=True
 )
