@@ -73,10 +73,9 @@ class TopologyClient(Client):
         )
         return response
 
-    def reserve(self, topology_id, host):
-        body = host
+    def reserve(self, topology_id, json):
         response = self.session.post(
-            url=f"{self.url}/{self.path}/{topology_id}/reserve", json=body
+            url=f"{self.url}/{self.path}/{topology_id}/reserve", json=json
         )
         return response
 

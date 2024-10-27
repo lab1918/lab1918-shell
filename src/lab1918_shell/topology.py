@@ -182,13 +182,22 @@ def update(ctx, topology_id, topology_json):
 @topology.command()
 @click.pass_context
 @click.option("--topology-id", help="topology id")
-@click.option("--host-json", help="host json string", default="{}")
-def reserve(ctx, topology_id, host_json):
+@click.option(
+    "--extra-args",
+    help="extra args for topology reservation, use key=value format",
+    multiple=True,
+)
+def reserve(ctx, topology_id, extra_args):
     client: TopologyClient = ctx.obj["client"]
     logger.info("reserve topology ...")
+    kwargs = {}
+    if extra_args:
+        for each_arg in extra_args:
+            key, value = each_arg.split("=")
+            key = key.replace("-", "_")
+            kwargs[key] = value
     try:
-        host = json.loads(host_json)
-        res = client.reserve(topology_id, host)
+        res = client.reserve(topology_id, kwargs)
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
     except Exception as e:
