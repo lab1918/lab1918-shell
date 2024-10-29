@@ -9,13 +9,13 @@
     ],
     "links": [
         {
-            "nodes": [
+            "endpoints": [
                 "r1",
                 "r2"
             ]
         },
         {
-            "nodes": [
+            "endpoints": [
                 "r1",
                 "r2"
             ]

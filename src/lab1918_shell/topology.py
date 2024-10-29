@@ -1,5 +1,6 @@
 import click
 import json
+import yaml
 
 from lab1918_shell.config import Config
 from lab1918_shell.client import TopologyClient
@@ -162,18 +163,25 @@ def delete(ctx, topology_id):
 @click.pass_context
 @click.option("--topology-id", "-t", help="topology id")
 @click.option("--topology-json", help="topology config json file name")
-def update(ctx, topology_id, topology_json):
+@click.option("--topology-yaml", help="topology config yaml file name")
+def update(ctx, topology_id, topology_json, topology_yaml):
     client: TopologyClient = ctx.obj["client"]
     logger.info("update topology ...")
     try:
-        if not topology_json:
-            config = {}
-        else:
+        if topology_json:
             with open(topology_json) as f:
                 config = json.loads(f.read())
+        elif topology_yaml:
+            with open(topology_yaml) as stream:
+                config = yaml.safe_load(stream)
+        else:
+            click.echo("please specify either topology-json or topology-yaml")
+            return
         res = client.update_topology(topology_id, config)
         res.raise_for_status()
         click.echo(json.dumps(res.json(), indent=4))
+    except yaml.YAMLError as e:
+        click.echo(e, err=True)
     except Exception as e:
         click.echo(e, err=True)
         click.echo(f"{e.response.json()}", err=True)
