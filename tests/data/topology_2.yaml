@@ -1,0 +1,18 @@
+---
+nodes:
+- hostname: r1
+  vendor: arista
+  file: cEOS64-lab-4.33.0F.tar
+  arch: x86
+- hostname: r2
+  vendor: arista
+  file: cEOS64-lab-4.33.0F.tar
+  arch: x86
+
+links:
+- endpoints:
+  - r1:eth0
+  - r2:eth0
+- endpoints:
+  - r1:eth1
+  - r2:eth1
